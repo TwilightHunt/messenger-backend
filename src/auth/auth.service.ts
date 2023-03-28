@@ -4,6 +4,7 @@ import { UsersService } from "src/users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcryptjs";
+import { UserDocument } from "src/users/user.schema";
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
       password: bcrypt.hashSync(userDto.password, 10),
     });
 
-    const tokens = await this.getTokens(newUser._id, newUser.username);
+    const tokens = await this.getTokens(newUser);
     return tokens;
   }
 
@@ -39,26 +40,23 @@ export class AuthService {
       throw new BadRequestException("Password is incorrect");
     }
 
-    const tokens = await this.getTokens(user._id, user.username);
+    const tokens = await this.getTokens(user);
     return tokens;
   }
 
-  async getTokens(userId: string, username: string) {
+  async getTokens(payload: UserDocument) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
+        { user: payload },
         {
-          syb: userId,
-          username,
-        },
-        {
-          secret: this.configService.get<string>("JWT_ACCESS_SECRET"),
+          secret: process.env.JWT_ACCESS_SECRET,
           expiresIn: "15m",
         }
       ),
       this.jwtService.signAsync(
-        { sub: userId, username },
+        { user: payload },
         {
-          secret: this.configService.get<string>("JWT_REFRESH_SECRET"),
+          secret: process.env.JWT_REFRESH_SECRET,
           expiresIn: "7d",
         }
       ),

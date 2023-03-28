@@ -1,6 +1,7 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger/dist";
 import { ApiTags } from "@nestjs/swagger/dist/decorators";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./user.schema";
 import { UsersService } from "./users.service";
@@ -16,4 +17,6 @@ export class UsersController {
   create(@Body() userDto: CreateUserDto) {
     return this.usersService.create(userDto);
   }
+
+  //@UseGuards(JwtAuthGuard)
 }
