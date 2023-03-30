@@ -17,6 +17,4 @@ export class CreateUserDto {
   @IsString({ message: "String expected" })
   @Length(8, undefined, { message: "Password must contain at least 8 symbols" })
   readonly password: string;
-
-  readonly refreshToken: string;
 }
