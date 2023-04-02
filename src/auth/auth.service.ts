@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException } from "@nestjs/common";
-import { CreateUserDto } from "src/users/dto/create-user.dto";
+import { UserDto } from "src/users/dto/user.dto";
 import { UsersService } from "src/users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
@@ -15,7 +15,7 @@ export class AuthService {
     private configService: ConfigService
   ) {}
 
-  async register(userDto: CreateUserDto): Promise<any> {
+  async register(userDto: UserDto): Promise<any> {
     const userExists = await this.usersService.findByUsername(userDto.username);
 
     if (userExists) {
