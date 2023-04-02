@@ -5,6 +5,7 @@ import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcryptjs";
 import { UserDocument } from "src/users/user.schema";
+import { AuthDto } from "./dto/auth.dto";
 
 @Injectable()
 export class AuthService {
@@ -30,8 +31,11 @@ export class AuthService {
     return tokens;
   }
 
-  async login(userDto: CreateUserDto) {
-    const user = await this.usersService.findByUsername(userDto.username);
+  async login(userDto: AuthDto) {
+    const user = userDto.login.includes("@")
+      ? await this.usersService.findByEmail(userDto.login)
+      : await this.usersService.findByUsername(userDto.login);
+
     if (!user) {
       throw new BadRequestException("User does not exists");
     }
@@ -41,7 +45,7 @@ export class AuthService {
     }
 
     const tokens = await this.getTokens(user);
-    return tokens;
+    return { ...tokens, user };
   }
 
   async getTokens(payload: UserDocument) {

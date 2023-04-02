@@ -2,10 +2,21 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder } from "@nestjs/swagger";
 import { SwaggerModule } from "@nestjs/swagger/dist";
 import { AppModule } from "./app.module";
+import * as cookieParser from "cookie-parser";
 
 async function start() {
   const PORT = 5000;
-  const app = await NestFactory.create(AppModule);
+
+  const cors = {
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    origin: process.env.ORIGIN_URL,
+    credentials: true,
+    "Access-Control-Allow-Headers": "Authorization, OPTIONS",
+  };
+
+  const app = await NestFactory.create(AppModule, { cors });
+
+  app.use(cookieParser());
 
   const config = new DocumentBuilder()
     .setTitle("Messenger backend")

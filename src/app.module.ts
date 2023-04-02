@@ -12,9 +12,9 @@ import * as path from "path";
   providers: [],
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, "static"),
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: path.resolve(__dirname, "static"),
+    // }),
     MongooseModule.forRoot(process.env.DB_URL, {
       useUnifiedTopology: true,
       useNewUrlParser: true,

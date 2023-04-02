@@ -12,13 +12,13 @@ import { UsersService } from "./users.service";
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @ApiOperation({ summary: "User creating" })
-  @ApiResponse({ status: 200, type: [User] })
-  @UsePipes(ValidationPipe)
-  @Post()
-  create(@Body() userDto: CreateUserDto) {
-    return this.usersService.create(userDto);
-  }
+  // @ApiOperation({ summary: "User creating" })
+  // @ApiResponse({ status: 200, type: [User] })
+  // @UsePipes(ValidationPipe)
+  // @Post()
+  // create(@Body() userDto: CreateUserDto) {
+  //   return this.usersService.create(userDto);
+  // }
 
   //@UseGuards(JwtAuthGuard)
 }
