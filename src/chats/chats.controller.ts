@@ -1,13 +1,13 @@
 import {
   Controller,
   Get,
+  Query,
   Request,
   UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { ChatsService } from "./chats.service";
 
@@ -17,9 +17,14 @@ export class ChatsController {
 
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor("profileImage"))
   @Get("/user-chats")
   async getUserChats(@Request() req) {
     return await this.chatsService.getUserChats(req.user._id);
+  }
+
+  @Get("/history")
+  async getChatHistory(@Query() query) {
+    const { id, offset, amount } = query;
+    return await this.chatsService.getChatHistory(id, offset, amount);
   }
 }

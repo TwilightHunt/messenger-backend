@@ -1,18 +1,19 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
+import { Injectable, BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { UserDto } from "src/users/dto/user.dto";
 import { UsersService } from "src/users/users.service";
 import { JwtService } from "@nestjs/jwt";
-import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcryptjs";
-import { UserDocument } from "src/users/user.schema";
+import { User, UserDocument } from "src/users/user.schema";
 import { AuthDto } from "./dto/auth.dto";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private configService: ConfigService
+    @InjectModel(User.name) private usersModel: Model<UserDocument>
   ) {}
 
   async register(userDto: UserDto): Promise<any> {
@@ -66,5 +67,23 @@ export class AuthService {
       ),
     ]);
     return { accessToken, refreshToken };
+  }
+
+  async refresh(token: string) {
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+
+    const { user } = this.jwtService.verify(token, {
+      secret: process.env.JWT_REFRESH_SECRET,
+    });
+
+    if (!user._id) {
+      throw new UnauthorizedException();
+    }
+
+    const tokens = await this.getTokens(user);
+
+    return tokens;
   }
 }
