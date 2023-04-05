@@ -1,4 +1,3 @@
-import { Controller, Put, Body, UsePipes, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger/dist";
 import { ApiTags } from "@nestjs/swagger/dist/decorators";
@@ -7,6 +6,16 @@ import { ValidationPipe } from "src/pipes/validation.pipe";
 import { UserDto } from "./dto/user.dto";
 import { User } from "./user.schema";
 import { UsersService } from "./users.service";
+import {
+  Controller,
+  Put,
+  Body,
+  UsePipes,
+  Get,
+  Query,
+  UseInterceptors,
+  UploadedFile,
+} from "@nestjs/common";
 
 @ApiTags("Users")
 @Controller("users")
@@ -22,5 +31,10 @@ export class UsersController {
   async update(@Body() userDto: UserDto, @UploadedFile() file) {
     const data = { user: userDto, profileImage: file };
     return await this.usersService.update(data);
+  }
+
+  @Get("/user")
+  async getByUsername(@Query() query) {
+    return await this.usersService.findByUsername(query.username);
   }
 }
