@@ -14,4 +14,12 @@ services:
       - 5000:5000
       - 9229:9229
     command: npm run start:dev
+    depends_on:
+      - mongo
     restart: always
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
