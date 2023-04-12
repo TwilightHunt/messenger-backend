@@ -24,12 +24,13 @@ export class AuthService {
     }
 
     const newUser = await this.usersService.create({
-      ...userDto,
+      email: userDto.email,
+      username: userDto.username,
       password: bcrypt.hashSync(userDto.password, 10),
     });
 
     const tokens = await this.getTokens(newUser);
-    return tokens;
+    return { ...tokens, user: newUser };
   }
 
   async login(userDto: AuthDto) {

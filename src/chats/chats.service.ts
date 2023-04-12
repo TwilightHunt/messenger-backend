@@ -145,7 +145,7 @@ export class ChatsService {
 
   async getUserChats(uid: string) {
     const chatsInDb = await this.userChatsModel.findOne({ user: uid }).populate("chats").exec();
-    return chatsInDb.chats;
+    return chatsInDb?.chats;
   }
 
   async getChatHistory(id: string, offset: number, amount: number) {

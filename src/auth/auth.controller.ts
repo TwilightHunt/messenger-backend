@@ -25,8 +25,21 @@ export class AuthController {
 
   @UsePipes(ValidationPipe)
   @Post("/register")
-  async register(@Body() userDto: UserDto) {
-    return this.authService.register(userDto);
+  async register(@Body() userDto: UserDto, @Res({ passthrough: true }) res: Response) {
+    const { refreshToken, accessToken, user } = await this.authService.register(userDto);
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+    return { user, token: accessToken };
+  }
+
+  @Get("/logout")
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie("refresh_token");
+    return;
   }
 
   @Get("/refresh")

@@ -3,10 +3,6 @@ import { IsString, Length } from "class-validator";
 import { IsEmail } from "class-validator";
 
 export class UserDto {
-  @ApiProperty({ example: "123" })
-  @IsString({ message: "String expected" })
-  readonly _id: string;
-
   @ApiProperty({ example: "catman@mail.com" })
   @IsString({ message: "String expected" })
   @IsEmail({}, { message: "Incorrect email" })
