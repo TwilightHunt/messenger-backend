@@ -16,7 +16,7 @@ export class AuthService {
   ) {}
 
   async register(userDto: UserDto): Promise<any> {
-    const userExists = await this.usersService.findByUsername(userDto.username);
+    const userExists = await this.usersService.findByParam({ username: userDto.username });
 
     if (userExists) {
       throw new BadRequestException("User already exists");
@@ -34,7 +34,7 @@ export class AuthService {
   async login(userDto: AuthDto) {
     const user = userDto.login.includes("@")
       ? await this.usersService.findByEmail(userDto.login)
-      : await this.usersService.findByUsername(userDto.login);
+      : await this.usersService.findByParam({ username: userDto.login });
 
     if (!user) {
       throw new BadRequestException("User does not exists");

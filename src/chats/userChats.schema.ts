@@ -7,8 +7,8 @@ export type UserChatsDocument = UserChats & Document;
 
 @Schema()
 export class UserChats {
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: "User" })
-  user: User;
+  @Prop({})
+  user: string;
 
   @Prop([Chat])
   chats: Chat[];

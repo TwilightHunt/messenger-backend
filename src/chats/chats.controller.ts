@@ -20,6 +20,26 @@ export class ChatsController {
   @UseInterceptors(FileInterceptor("profileImage"))
   @Get("/user-chats")
   async getUserChats(@Request() req) {
+<<<<<<< Updated upstream
     return await this.chatsService.getUserChats(req.user._id);
+=======
+    const chats = await this.chatsService.getUserChats(req.user._id);
+
+    return chats;
+  }
+
+  @Get("/history")
+  async getChatHistory(@Query() query) {
+    const { id, offset, amount } = query;
+    return await this.chatsService.getChatHistory(id, offset, amount);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("/send")
+  async send(@Request() req, @Body() body) {
+    const user = req.user;
+    const message = await this.chatsService.send({ ...body, user });
+    return message;
+>>>>>>> Stashed changes
   }
 }

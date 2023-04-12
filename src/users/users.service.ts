@@ -5,6 +5,11 @@ import { FilesService } from "src/files/files.service";
 import { UserDto } from "./dto/user.dto";
 import { User, UserDocument } from "./user.schema";
 
+type ParamType = {
+  username?: string;
+  id?: string;
+};
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -17,8 +22,18 @@ export class UsersService {
     return newUser.save();
   }
 
-  async findByUsername(username: string): Promise<UserDocument> {
-    return this.userModel.findOne({ username }).exec();
+  async findByParam(query: ParamType): Promise<UserDocument> {
+    const { username, id } = query;
+
+    if (username) {
+      return this.userModel.findOne({ username }).exec();
+    }
+
+    if (id) {
+      return this.userModel.findById(id).exec();
+    }
+
+    throw new BadRequestException("Incorrect param");
   }
 
   async findByEmail(email: string): Promise<UserDocument> {

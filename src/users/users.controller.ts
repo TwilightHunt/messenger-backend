@@ -34,7 +34,7 @@ export class UsersController {
   }
 
   @Get("/user")
-  async getByUsername(@Query() query) {
-    return await this.usersService.findByUsername(query.username);
+  async getByParam(@Query() query: Object) {
+    return await this.usersService.findByParam(query);
   }
 }
