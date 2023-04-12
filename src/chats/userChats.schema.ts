@@ -10,7 +10,7 @@ export class UserChats {
   @Prop({})
   user: string;
 
-  @Prop([Chat])
+  @Prop([{ required: true, type: mongoose.Schema.Types.ObjectId, ref: "Chat" }])
   chats: Chat[];
 }
 

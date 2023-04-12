@@ -1,20 +1,18 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Chat, ChatDocument } from "./chats.schema";
 import { UserChats, UserChatsDocument } from "./userChats.schema";
+import { Message, MessageDocument } from "./message.schema";
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectModel(Chat.name) private chatModel: Model<ChatDocument>,
-    @InjectModel(UserChats.name) private userChatsModel: Model<UserChatsDocument>
+    @InjectModel(UserChats.name) private userChatsModel: Model<UserChatsDocument>,
+    @InjectModel(Message.name) private messageModel: Model<MessageDocument>
   ) {}
 
-<<<<<<< Updated upstream
-  async getUserChats(uid: string) {
-    return this.userChatsModel.findOne({ user: uid });
-=======
   async send(data) {
     const { user, receiver, message } = data;
 
@@ -167,6 +165,5 @@ export class ChatsService {
     }
 
     return result;
->>>>>>> Stashed changes
   }
 }
