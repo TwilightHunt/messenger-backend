@@ -26,7 +26,10 @@ export class ChatsService {
       time: Date.now(),
     };
 
-    const userChatsInDB = await this.userChatsModel.findOne({ user: user._id }).clone();
+    const userChatsInDB = await this.userChatsModel
+      .findOne({ user: user._id })
+      .populate("chats")
+      .exec();
 
     if (!userChatsInDB) {
       const newMessage = await this.messageModel.create(messageInfo);
@@ -68,7 +71,7 @@ export class ChatsService {
     }
 
     const newMessage = await this.messageModel.create(messageInfo);
-    const chatInDB = await this.chatModel.findById(chat.id);
+    const chatInDB = await this.chatModel.findById(chat);
     chatInDB.messages.unshift(newMessage);
 
     const result = this.chatModel.findByIdAndUpdate(chatInDB._id, {
@@ -90,7 +93,10 @@ export class ChatsService {
       time: Date.now(),
     };
 
-    const receiverChatsInDB = await this.userChatsModel.findOne({ user: receiver.id }).clone();
+    const receiverChatsInDB = await this.userChatsModel
+      .findOne({ user: receiver._id })
+      .populate("chats")
+      .exec();
 
     if (!receiverChatsInDB) {
       const newMessage = await this.messageModel.create(messageInfo);
@@ -126,7 +132,7 @@ export class ChatsService {
     }
 
     const newMessage = await this.messageModel.create(messageInfo);
-    const chatInDB = await this.chatModel.findById(chat.id);
+    const chatInDB = await this.chatModel.findById(chat);
     chatInDB.messages.unshift(newMessage);
 
     const result = this.chatModel.findByIdAndUpdate(chatInDB._id, {
