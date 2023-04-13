@@ -37,4 +37,9 @@ export class UsersController {
   async getByParam(@Query() query: Object) {
     return await this.usersService.findByParam(query);
   }
+
+  @Get("/search")
+  async search(@Query() q: any) {
+    return await this.usersService.search(q.query);
+  }
 }

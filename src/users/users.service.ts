@@ -68,4 +68,25 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async search(query: any) {
+    const result = await this.userModel
+      .aggregate([
+        {
+          $search: {
+            index: "users",
+            autocomplete: {
+              query: query,
+              path: "username",
+              fuzzy: {
+                maxEdits: 2,
+              },
+            },
+          },
+        },
+      ])
+      .exec();
+
+    return result;
+  }
 }
