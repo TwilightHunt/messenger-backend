@@ -5,8 +5,9 @@ import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { FilesModule } from "./files/files.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { ChatsModule } from './chats/chats.module';
+import { ChatsModule } from "./chats/chats.module";
 import * as path from "path";
+import { GatewayModule } from "./gateway/gateway.module";
 
 @Module({
   controllers: [],
@@ -24,6 +25,7 @@ import * as path from "path";
     AuthModule,
     FilesModule,
     ChatsModule,
+    GatewayModule,
   ],
 })
 export class AppModule {}
