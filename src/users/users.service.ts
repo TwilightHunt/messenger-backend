@@ -40,7 +40,7 @@ export class UsersService {
     return this.userModel.findOne({ email }).exec();
   }
 
-  async update(data): Promise<UserDocument> {
+  async update(data: any): Promise<UserDocument> {
     const { user, profileImage } = data;
 
     const userInDB = await this.userModel.findById(user._id);
@@ -76,7 +76,7 @@ export class UsersService {
           $search: {
             index: "users",
             autocomplete: {
-              query: query,
+              query: query.text,
               path: "username",
               fuzzy: {
                 maxEdits: 2,
@@ -87,6 +87,6 @@ export class UsersService {
       ])
       .exec();
 
-    return result;
+    return { result };
   }
 }

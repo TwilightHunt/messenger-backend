@@ -40,6 +40,6 @@ export class UsersController {
 
   @Get("/search")
   async search(@Query() q: any) {
-    return await this.usersService.search(q.query);
+    return await this.usersService.search(q);
   }
 }
