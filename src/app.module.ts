@@ -4,9 +4,7 @@ import { ConfigModule } from "@nestjs/config";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { FilesModule } from "./files/files.module";
-import { ServeStaticModule } from "@nestjs/serve-static";
 import { ChatsModule } from "./chats/chats.module";
-import * as path from "path";
 import { GatewayModule } from "./gateway/gateway.module";
 
 @Module({
@@ -14,9 +12,6 @@ import { GatewayModule } from "./gateway/gateway.module";
   providers: [],
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, "static"),
-    }),
     MongooseModule.forRoot(process.env.DB_URL, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
