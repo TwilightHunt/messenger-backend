@@ -9,7 +9,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { ChatsService } from "./chats.service";
 
 @Controller("chats")
