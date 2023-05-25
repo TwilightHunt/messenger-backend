@@ -1,7 +1,7 @@
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger/dist";
 import { ApiTags } from "@nestjs/swagger/dist/decorators";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { UserDto } from "./dto/user.dto";
 import { ValidationPipe } from "../pipes/validation.pipe";
 import { User } from "./user.schema";
